@@ -14,7 +14,7 @@ LISTEN=127.0.0.1:10025
 RELAYHOST=127.0.0.1:25
 
 # Number of child servers to start and maintain (where n > 0).
-MAXCHILD=25
+MAXCHILD=5
 
 # Tells spampd to have SpamAssassin add headers to all scanned mail, not just
 # spam. By default spampd will only rewrite messages which exceed the spam

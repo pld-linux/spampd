@@ -2,17 +2,22 @@
 Summary:	spampd - Spam Proxy Daemon
 Name:		spampd
 Version:	2.20
-Release:	0.1
+Release:	0.5
 Epoch:		0
 License:	GPL v2+
 Group:		Applications/Mail
 Source0:	http://www.worlddesign.com/Content/rd/mta/spampd/spampd-2.20.tar.gz
 # Source0-md5:	4efdb66e424bc24f8a7ce3bf6264ce31
+Source1:	%{name}.init
+Source2:	%{name}.sysconfig
 URL:		http://www.worlddesign.com/index.cfm/rd/mta/spampd.htm
-%if %{with initscript}
-PreReq:		rc-scripts
+BuildRequires:	perl-tools-pod
+BuildRequires:	rpmbuild(macros) >= 1.228
+# This is not automatically depended as it's only recommendation.
+# but we want PLD package be the best! :)
+Requires:	perl-Time-HiRes
+Requires(post,preun):	rc-scripts
 Requires(post,preun):	/sbin/chkconfig
-%endif
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -30,15 +35,34 @@ run on any platform supported by Perl and SpamAssassin.
 %prep
 %setup -q
 
+%build
+pod2man spampd > spampd.1
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sbindir}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man1,/etc/rc.d/init.d,/etc/sysconfig}
 install %{name} $RPM_BUILD_ROOT%{_sbindir}
+install %{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+/sbin/chkconfig --add %{name}
+%service %{name} restart
+
+%preun
+if [ "$1" = "0" ]; then
+	%service -q %{name} stop
+	/sbin/chkconfig --del %{name}
+fi
 
 %files
 %defattr(644,root,root,755)
 %doc changelog.txt spampd.html
 %attr(755,root,root) %{_sbindir}/*
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
+%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
+%{_mandir}/man1/*

@@ -1,0 +1,72 @@
+#!/bin/sh
+#
+# This script starts and stops the spampd daemon
+#
+# chkconfig: 2345 80 30
+#
+# description: spampd is a daemon process which uses SpamAssassin to check
+#              email messages for SPAM.
+#
+# $Id$
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Get service config
+[ -f /etc/sysconfig/spampd ] && . /etc/sysconfig/spampd
+
+# Check that networking is up.
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		msg_network_down spampd
+		exit 1
+	fi
+else
+	exit 0
+fi
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/spampd ]; then
+		msg_starting spampd
+		daemon spampd --host=$LISTEN --relayhost=$RELAYHOST --children=$MAXCHILD $(is_yes "$TAGALL" && echo --tagall) $SPAMPD_OPTS
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/spampd
+	else
+		msg_already_running spampd
+	fi
+	;;
+  stop)
+	# Stop daemons.
+	if [ -f /var/lock/subsys/spampd ]; then
+		# Stop daemons.
+		msg_stopping spampd
+		killproc spampd
+		rm -f /var/lock/subsys/spampd
+	else
+		msg_not_running spampd
+	fi
+	;;
+  restart)
+	$0 stop
+	$0 start
+	exit $?
+	;;
+  status)
+	status spampd
+	RETVAL=$?
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|status}"
+	exit 3
+esac
+
+exit $RETVAL
+
+# This must be last line !
+# vi:syntax=sh:tw=78:ts=4:sw=4

@@ -1,0 +1,25 @@
+# Customized settings for spampd 
+
+# Define nice level for spampd 
+SERVICE_RUN_NICE_LEVEL="+0"
+
+# Specifies what hostname/IP and port spampd listens on. By default, it
+# listens on 127.0.0.1 (localhost) on port 10025.
+# Important! You should NOT enable spampd to listen on a public interface (IP
+# address) unless you know exactly what you're doing!
+LISTEN=127.0.0.1:10025
+
+# Specifies the hostname/IP where spampd will relay all messages. Defaults to 127.0.0.1 (localhost).
+# If the port is not provided, that defaults to 25.
+RELAYHOST=127.0.0.1:25
+
+# Number of child servers to start and maintain (where n > 0).
+MAXCHILD=25
+
+# Tells spampd to have SpamAssassin add headers to all scanned mail, not just
+# spam. By default spampd will only rewrite messages which exceed the spam
+# threshold score (as defined in the SA settings).
+TAGALL=yes
+
+# Other daemon options not supported here.
+SPAMPD_OPTS=""

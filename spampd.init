@@ -34,7 +34,9 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/spampd ]; then
 		msg_starting spampd
-		daemon spampd --host=$LISTEN --relayhost=$RELAYHOST --children=$MAXCHILD $(is_yes "$TAGALL" && echo --tagall) $SPAMPD_OPTS
+		daemon spampd --host=$LISTEN --relayhost=$RELAYHOST --children=$MAXCHILD \
+			--pid=/var/run/spampd.pid \
+			$(is_yes "$TAGALL" && echo --tagall) $SPAMPD_OPTS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/spampd
 	else
@@ -46,7 +48,7 @@ case "$1" in
 	if [ -f /var/lock/subsys/spampd ]; then
 		# Stop daemons.
 		msg_stopping spampd
-		killproc spampd
+		killproc --pidfile spampd.pid spampd
 		rm -f /var/lock/subsys/spampd
 	else
 		msg_not_running spampd

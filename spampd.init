@@ -2,7 +2,7 @@
 #
 # This script starts and stops the spampd daemon
 #
-# chkconfig: 2345 80 30
+# chkconfig: 2345 80 20
 #
 # description: spampd is a daemon process which uses SpamAssassin to check
 #              email messages for SPAM.

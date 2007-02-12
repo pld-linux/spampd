@@ -1,6 +1,6 @@
 %include	/usr/lib/rpm/macros.perl
 Summary:	spampd - Spam Proxy Daemon
-Summary(pl.UTF-8):   spampd - demon spam proxy
+Summary(pl.UTF-8):	spampd - demon spam proxy
 Name:		spampd
 Version:	2.20
 Release:	0.5

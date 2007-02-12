@@ -1,6 +1,6 @@
 %include	/usr/lib/rpm/macros.perl
 Summary:	spampd - Spam Proxy Daemon
-Summary(pl):	spampd - demon spam proxy
+Summary(pl.UTF-8):   spampd - demon spam proxy
 Name:		spampd
 Version:	2.20
 Release:	0.5
@@ -33,18 +33,18 @@ will ask SA to add some headers and a report to the message indicating
 it's spam and why. spampd is written in Perl and should theoretically
 run on any platform supported by Perl and SpamAssassin.
 
-%description -l pl
-spampd to program uøywany wewn±trz systemu dostarczania poczty
-elektronicznej w celu przeszukiwania wiadomo∂ci pod k±tem niechcianej
+%description -l pl.UTF-8
+spampd to program u≈ºywany wewnƒÖtrz systemu dostarczania poczty
+elektronicznej w celu przeszukiwania wiadomo≈õci pod kƒÖtem niechcianej
 poczty komercyjnej (UCE - Unsolicited Commercial E-mail, inaczej
-spamu). Uøywa dobrego programu SpamAssassin (SA) do w≥a∂ciwego
-przeszukiwania wiadomo∂ci. spampd dzia≥a jako przezroczyste proxy
-SMTP/LMTP pomiÍdzy dwoma serwerami pocztowymi i w trakcie transakcji
-przepuszcza pocztÍ przez SA. Je∂li SA stwierdzi, øe poczta moøe byÊ
-spamem, spampd prosi SA o dodanie do wiadomo∂ci nag≥ÛwkÛw i raportu
-oznaczaj±cego, øe wiadomo∂Ê jest spamem i dlaczego. spampd jest
-napisany w Perlu i powinien teoretycznie dzia≥aÊ na kaødej platformie
-obs≥ugiwanej przez Perla i SpamAssassina.
+spamu). U≈ºywa dobrego programu SpamAssassin (SA) do w≈Ça≈õciwego
+przeszukiwania wiadomo≈õci. spampd dzia≈Ça jako przezroczyste proxy
+SMTP/LMTP pomiƒôdzy dwoma serwerami pocztowymi i w trakcie transakcji
+przepuszcza pocztƒô przez SA. Je≈õli SA stwierdzi, ≈ºe poczta mo≈ºe byƒá
+spamem, spampd prosi SA o dodanie do wiadomo≈õci nag≈Ç√≥wk√≥w i raportu
+oznaczajƒÖcego, ≈ºe wiadomo≈õƒá jest spamem i dlaczego. spampd jest
+napisany w Perlu i powinien teoretycznie dzia≈Çaƒá na ka≈ºdej platformie
+obs≈Çugiwanej przez Perla i SpamAssassina.
 
 %prep
 %setup -q

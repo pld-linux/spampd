@@ -2,23 +2,22 @@
 Summary:	spampd - Spam Proxy Daemon
 Summary(pl.UTF-8):	spampd - demon spam proxy
 Name:		spampd
-Version:	2.20
-Release:	0.5
-Epoch:		0
+Version:	2.30
+Release:	1
 License:	GPL v2+
 Group:		Applications/Mail
-Source0:	http://www.worlddesign.com/Content/rd/mta/spampd/spampd-2.20.tar.gz
-# Source0-md5:	4efdb66e424bc24f8a7ce3bf6264ce31
+Source0:	http://www.worlddesign.com/Content/rd/mta/spampd/%{name}-%{version}.tar.gz
+# Source0-md5:	742c6f2cb75db54e59d044a8ee40445f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.worlddesign.com/index.cfm/rd/mta/spampd.htm
 BuildRequires:	perl-tools-pod
 BuildRequires:	rpmbuild(macros) >= 1.228
-# This is not automatically depended as it's only recommendation.
-# but we want PLD package be the best! :)
-Requires:	perl-Time-HiRes
-Requires(post,preun):	rc-scripts
 Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
+# This is not automatically depended as it's only recommendation.
+# but we want PLD package be the best!:)
+Requires:	perl-Time-HiRes
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -35,16 +34,17 @@ run on any platform supported by Perl and SpamAssassin.
 
 %description -l pl.UTF-8
 spampd to program używany wewnątrz systemu dostarczania poczty
-elektronicznej w celu przeszukiwania wiadomości pod kątem niechcianej
-poczty komercyjnej (UCE - Unsolicited Commercial E-mail, inaczej
-spamu). Używa dobrego programu SpamAssassin (SA) do właściwego
-przeszukiwania wiadomości. spampd działa jako przezroczyste proxy
-SMTP/LMTP pomiędzy dwoma serwerami pocztowymi i w trakcie transakcji
-przepuszcza pocztę przez SA. Jeśli SA stwierdzi, że poczta może być
-spamem, spampd prosi SA o dodanie do wiadomości nagłówków i raportu
-oznaczającego, że wiadomość jest spamem i dlaczego. spampd jest
-napisany w Perlu i powinien teoretycznie działać na każdej platformie
-obsługiwanej przez Perla i SpamAssassina.
+elektronicznej w celu przeszukiwania wiadomości pod kątem
+niechcianej poczty komercyjnej (UCE - Unsolicited Commercial E-mail,
+inaczej spamu). Używa dobrego programu SpamAssassin (SA) do
+właściwego przeszukiwania wiadomości. spampd działa jako
+przezroczyste proxy SMTP/LMTP pomiędzy dwoma serwerami pocztowymi i w
+trakcie transakcji przepuszcza pocztę przez SA. Jeśli SA stwierdzi,
+że poczta może być spamem, spampd prosi SA o dodanie do wiadomości
+nagłówków i raportu oznaczającego, że wiadomość jest spamem i
+dlaczego. spampd jest napisany w Perlu i powinien teoretycznie
+działać na każdej platformie obsługiwanej przez Perla i
+SpamAssassina.
 
 %prep
 %setup -q

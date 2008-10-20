@@ -12,6 +12,7 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.worlddesign.com/index.cfm/rd/mta/spampd.htm
 BuildRequires:	perl-tools-pod
+BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.228
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
@@ -34,29 +35,28 @@ run on any platform supported by Perl and SpamAssassin.
 
 %description -l pl.UTF-8
 spampd to program używany wewnątrz systemu dostarczania poczty
-elektronicznej w celu przeszukiwania wiadomości pod kątem
-niechcianej poczty komercyjnej (UCE - Unsolicited Commercial E-mail,
-inaczej spamu). Używa dobrego programu SpamAssassin (SA) do
-właściwego przeszukiwania wiadomości. spampd działa jako
-przezroczyste proxy SMTP/LMTP pomiędzy dwoma serwerami pocztowymi i w
-trakcie transakcji przepuszcza pocztę przez SA. Jeśli SA stwierdzi,
-że poczta może być spamem, spampd prosi SA o dodanie do wiadomości
-nagłówków i raportu oznaczającego, że wiadomość jest spamem i
-dlaczego. spampd jest napisany w Perlu i powinien teoretycznie
-działać na każdej platformie obsługiwanej przez Perla i
-SpamAssassina.
+elektronicznej w celu przeszukiwania wiadomości pod kątem niechcianej
+poczty komercyjnej (UCE - Unsolicited Commercial E-mail, inaczej
+spamu). Używa dobrego programu SpamAssassin (SA) do właściwego
+przeszukiwania wiadomości. spampd działa jako przezroczyste proxy
+SMTP/LMTP pomiędzy dwoma serwerami pocztowymi i w trakcie transakcji
+przepuszcza pocztę przez SA. Jeśli SA stwierdzi, że poczta może być
+spamem, spampd prosi SA o dodanie do wiadomości nagłówków i raportu
+oznaczającego, że wiadomość jest spamem i dlaczego. spampd jest
+napisany w Perlu i powinien teoretycznie działać na każdej platformie
+obsługiwanej przez Perla i SpamAssassina.
 
 %prep
 %setup -q
 
 %build
-pod2man spampd > spampd.1
+%{__make} spampd.8
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man1,/etc/rc.d/init.d,/etc/sysconfig}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/etc/rc.d/init.d,/etc/sysconfig}
 install %{name} $RPM_BUILD_ROOT%{_sbindir}
-install %{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
+cp -a %{name}.8 $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
@@ -79,4 +79,4 @@ fi
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
-%{_mandir}/man1/*
+%{_mandir}/man8/spampd.8*

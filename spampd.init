@@ -2,7 +2,7 @@
 #
 # This script starts and stops the spampd daemon
 #
-# chkconfig: 2345 80 20
+# chkconfig: 345 80 20
 #
 # description: spampd is a daemon process which uses SpamAssassin to check
 #              email messages for SPAM.
@@ -28,9 +28,7 @@ else
 	exit 0
 fi
 
-# See how we were called.
-case "$1" in
-  start)
+start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/spampd ]; then
 		msg_starting spampd
@@ -42,8 +40,9 @@ case "$1" in
 	else
 		msg_already_running spampd
 	fi
-	;;
-  stop)
+}
+
+stop() {
 	# Stop daemons.
 	if [ -f /var/lock/subsys/spampd ]; then
 		# Stop daemons.
@@ -53,22 +52,48 @@ case "$1" in
 	else
 		msg_not_running spampd
 	fi
+}
+
+condrestart() {
+	if [ -f /var/lock/subsys/spampd ]; then
+		stop
+		start
+	else
+		msg_not_running spampd
+		RETVAL=$1
+	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
 	;;
   restart)
-	$0 stop
-	$0 start
-	exit $?
+	stop
+	start
+	;;
+  restart)
+	stop
+	start
+	;;
+  try-restart)
+	condrestart 0
+	;;
+  force-reload)
+	condrestart 7
 	;;
   status)
 	status spampd
 	RETVAL=$?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|force-reload|status}"
 	exit 3
 esac
 
 exit $RETVAL
-
-# This must be last line !
-# vi:syntax=sh:tw=78:ts=4:sw=4
